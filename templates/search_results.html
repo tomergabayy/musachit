@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תוצאות חיפוש</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS for futuristic design and animations */
+        body {
+            background: linear-gradient(135deg, #ffffff, #b6b6b6, #595959); /* Gradient background */
+            font-family: 'Roboto', sans-serif;
+            color: #000000; /* Dark text color */
+            padding: 20px;
+            position: relative;
+            background-size: cover; /* Cover the entire screen */
+            background-repeat: no-repeat; /* Prevent background from repeating */
+            background-attachment: fixed;
+        }
+        .carousel-item {
+            text-align: center;
+        }
+        .garage-frame {
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            border-radius: 20px;
+            margin: 0 auto; /* Center align */
+            width: 70%; /* Set width */
+            padding: 20px;
+            transition: transform 0.5s ease-in-out;
+            text-align: right; /* align text to the right */
+            color: #37454d; /* Dark text color */
+        }
+        .garage-frame h3 {
+            color: #000000; /* Pink text color */
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        .garage-frame p {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #000000;
+        }
+        .garage-link {
+            color: inherit;
+            text-decoration: none;
+        }
+        /* Back to home button */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #000000; /* Pink button color */
+            color: #ffffff; /* White text color */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #737373; /* Lighter pink on hover */
+        }
+        /* Logout button */
+        .sign-out {
+            position: absolute;
+            top: 20px;
+            right: 20px; /* Adjust right position */
+            background-color: #000000; /* Black background color */
+            color: #ffffff; /* White text color */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .sign-out:hover {
+            background-color: #737373; /* Lighter black on hover */
+        }
+        /* Center align the h1 element */
+        h1 {
+            text-align: center;
+            margin-bottom: 40px; /* Add space below the h1 */
+        }
+        .notfound {
+            height: 450px;
+            width: auto;
+        }
+        .dropdown {
+            display: inline; /* Use inline instead of inline-block */
+            position: relative;
+            float: left;
+        }
+
+        button {
+            border: none;
+            border-radius: 2px;
+            padding: 10px 20px;
+            font-size: 12px;
+            cursor: pointer;
+            background-color: #000000;
+            color: #fff;
+        }
+
+        button:hover {
+            background-color: #353535;
+        }
+
+        .dropdown-options {
+            display: none;
+            position: absolute;
+            overflow: auto;
+            background-color: #fff;
+            border-radius: 2px;
+            box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.4);
+            right: 0;
+        }
+
+        .dropdown:hover .dropdown-options {
+            display: block;
+        }
+
+        .dropdown-options a {
+            display: block;
+            color: #000000;
+            padding: 5px;
+            text-decoration: none;
+            padding: 10px 20px;
+        }
+
+        .dropdown-options a:hover {
+            color: #0a0a23;
+            background-color: #ddd;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="window.location.href='/'"><span>&#10229;</span></button> 
+    <button class="sign-out" onclick="window.location.href='/logout'">התנתק</button>   
+    <div class="container">
+        <h1>תוצאות חיפוש</h1>
+        {% if empty %}
+        <img src="{{ url_for('static', filename='notfound.png') }}" alt="Not found" class="notfound">
+        {% endif %}
+        {% if not empty %}
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                {% for garage in garages %}
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}" {% if loop.first %}class="active"{% endif %}></li>
+                {% endfor %}
+            </ol>
+            <div class="carousel-inner">
+                {% for garage in garages %}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <div class="garage-frame">
+                                <div class="dropdown">
+                                    <button>פעולות</button>
+                                    <div class="dropdown-options">
+                                        <a class="dropdown-item" href="/delete/{{ garage.garage_num }}">מחק מוסך</a>
+                                        <a class="dropdown-item" href="/visit/{{ garage.garage_num }}">סמן ביקור</a>
+                                    </div>
+                                </div>               
+                                <h3>{{ garage.name }}</h3>
+                                <p><strong>כתובת:</strong> {{ garage.address }}</p>
+                                <p><strong>איש קשר:</strong> {{ garage.contact }}</p>
+                                <p><strong>מספר טלפון:</strong> {{ garage.phone }}</p>
+                                <p><strong>מספר ספק:</strong> {{ garage.garage_num }}</p>
+                                <p><strong>מותגים:</strong> {{ garage.brands }}</p>
+                                <p><strong>ביקור אחרון:</strong> {{ garage.last_visit }}</p>
+                            </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    <script>
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+      
+    window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    } 
+    </script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

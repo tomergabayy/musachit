@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הוסף מוסך</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffffff, #b6b6b6, #595959); /* Gradient background */
+            font-family: 'Roboto', sans-serif;
+            color: #ffffff;
+            padding: 20px;
+            position: relative;
+        }
+        .container {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        button[type="submit"] {
+            background-color: #111b27; /* Pink button color */
+            color: #ffffff; /* White button text color */
+            margin-top: 20px;
+            width: 100%;
+            border-radius: 25px;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .logo-img {
+            width: 220px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .form-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            background-color: rgba(51, 51, 51, 0.659); /* Semi-transparent white */
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3); /* Pink shadow */
+        }
+        .form-group {
+            text-align: right;
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #111b27; /* Pink button color */
+            color: #ffffff; /* White text color */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: rgb(138, 138, 138); /* Lighter pink on hover */
+        }
+        /* Logout button */
+        .sign-out {
+            position: absolute;
+            top: 20px;
+            right: 20px; /* Adjust right position */
+            background-color: #000000; /* Black background color */
+            color: #ffffff; /* White text color */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .sign-out:hover {
+            background-color: #737373; /* Lighter black on hover */
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="window.location.href='/'"><span>&#10229;</span></button>
+    <button class="sign-out" onclick="window.location.href='/logout'">התנתק</button>
+    <div class="container">
+        <div class="form-container">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="My Photo" class="logo-img">
+            <form action="/add_garage" method="POST">
+                <div class="form-group">
+                    <label for="name">שם המוסך</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">כתובת</label>
+                    <input type="text" id="address" name="address" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact">איש קשר</label>
+                    <input type="text" id="contact" name="contact" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">מספר טלפון</label>
+                    <input type="text" id="phone" name="phone" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="garage_num">מספר ספק</label>
+                    <input type="text" id="garage_num" name="garage_num" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="brands">מותגים</label>
+                    <input type="text" id="brands" name="brands" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">הוסף</button>
+            </form>
+        </div>
+    </div>
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

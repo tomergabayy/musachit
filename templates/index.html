@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מסך הבית</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffffff, #b6b6b6, #595959); /* Light grey gradient background */
+            font-family: 'Roboto', sans-serif;
+            color: #ffffff; /* Black text color */
+            text-align: center; /* Center align text */
+            padding: 20px; /* Add some padding */
+            background-size: cover; /* Cover the entire screen */
+            background-repeat: no-repeat; /* Prevent background from repeating */
+            background-attachment: fixed;
+            position: relative; /* Set position to relative */
+        }
+        .container {
+            margin-top: 20px; /* Reduce top margin */
+        }
+        .btn-add {
+            background-color: #808080; /* Light grey button color */
+            color: #111b27; /* Black button text color */
+            margin-top: 20px; /* Add margin to top */
+            width: 70%; /* Reduce button width */
+            border-radius: 50px; /* Round button corners */
+            padding: 15px; /* Add padding */
+            font-weight: bold; /* Make text bold */
+            font-size: 18px; /* Increase font size */
+            border: none; /* Remove button border */
+        }
+        .logo-img {
+            margin-bottom: 20px; /* Add margin to bottom */
+        }
+        .search-form {
+            margin-top: 20px; /* Add margin to top */
+        }
+        .search-input {
+            width: 70%; /* Reduce input width */
+            margin: 0 auto; /* Center align input */
+            margin-bottom: 20px; /* Add margin to bottom */
+            border-radius: 50px; /* Round input corners */
+            padding: 15px; /* Add padding */
+            font-size: 16px; /* Increase font size */
+            border: 2px solid #111b27; /* Light grey border */
+            background-color: transparent; /* Make input background transparent */
+            color: #111b27; /* Black text color */
+            outline: none; /* Remove outline on focus */
+        }
+        .sign-out {
+            position: absolute;
+            top: 20px;
+            right: 20px; /* Adjust right position */
+            background-color: #000000; /* Black background color */
+            border: none;
+            cursor: pointer;
+            color: #ffffff; /* White text color */
+            border-radius: 50px; /* Curved edges */
+            padding: 10px 20px; /* Add padding */
+            font-weight: bold; /* Make text bold */
+            font-size: 16px; /* Set font size */
+        }
+        .sign-out:hover {
+            opacity: 0.8; /* Reduce opacity on hover */
+        }
+        .search-button {
+            width: 50%; /* Reduce button width */
+            margin: 0 auto; /* Center align button */
+            border-radius: 50px; /* Round button corners */
+            padding: 15px; /* Add padding */
+            font-weight: bold; /* Make text bold */
+            font-size: 16px; /* Increase font size */
+            border: none; /* Remove button border */
+            background-color: #000000; /* Light grey button color */
+            color: #ffffff; /* Black button text color */
+            outline: none; /* Remove outline on focus */
+        }
+        .inline-button {
+            display: inline-block; /* Display the button inline */
+            margin-left: 10px; /* Add margin to the left */
+            background-color: #111b27; /* Light grey button color */
+            color: #ffffff; /* Black button text color */
+            border: none; /* Remove button border */
+            border-radius: 50%; /* Round button */
+            width: 40px; /* Set button width */
+            height: 40px; /* Set button height */
+            font-size: 20px; /* Increase font size */
+            line-height: 40px; /* Set line height */
+            text-align: center; /* Center align text */
+        }
+    </style>
+</head>
+<body>
+    <button class="sign-out" onclick="window.location.href='/logout'">התנתק</button>
+    <div class="container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="My Photo" class="logo-img">
+        <form action="/search" method="POST" class="search-form">
+            <div class="form-group">
+                <input type="text" name="query" class="form-control search-input" placeholder="חפש מוסך">
+            </div>
+            <a href="/reports" class="inline-button">📑</a>
+            <button type="submit" class="btn btn-primary search-button">חיפוש</button>
+            <a href="/add_garage" class="inline-button">+</a>
+        </form>
+    </div>
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
