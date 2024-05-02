@@ -3,10 +3,6 @@ pipeline {
         label 'slave'
     }
 
-  parameters {
-    string defaultValue: '2', description: 'Replicas number', name: 'replicas'
-  }
-
   environment {
     version = '1.0.0' 
   }
@@ -15,16 +11,16 @@ pipeline {
     stage('STAGE 1 checkout scm') {
       steps {
         git branch: 'main',
-            credentialsId: 'gitlab_cred',
-            url: 'http://gitlab.tomerg.click/tomer_gabay/portfolio.git'
+            credentialsId: 'github_unamepword',
+            url: 'https://github.com/tomergabayy/musachit.git'
       }
     }
 
     stage ('STAGE 2 build') {
       steps {
         script{
-          sh "docker build -t tomergabayy/whatstheweather:${version}-${currentBuild.number} ./weatherapp/"
-          sh "docker build -t tomergabayy/whatstheweather:latest ./weatherapp/"
+          sh "docker build -t tomergabayy/musachit:${version}-${currentBuild.number}"
+          sh "docker build -t tomergabayy/musachit:latest"
         }
         
       }
@@ -38,24 +34,35 @@ pipeline {
 
     stage ('STAGE 4 Publish ') {
       steps {
-      sh "docker push tomergabayy/whatstheweather:'${version}-${currentBuild.number}'"
+      sh "docker push tomergabayy/musachit:'${version}-${currentBuild.number}'"
       sh "docker push tomergabayy/whatstheweather:latest"
       }
     }
 
-    stage('STAGE 5 Upgrade Helm chart') {
+    stage('STAGE 5 Change image tag in gitops repo') {
       steps {
-        withKubeConfig([credentialsId: 'k8s-user', serverUrl: 'https://88AAEF22F52FFB389FD411F6BEC2B79E.yl4.eu-north-1.eks.amazonaws.com']) {
-          sh "helm upgrade weather-application weatherapp-chart --set image.tag='${version}-${currentBuild.number}',replicaCount=${replicas}"
-        }
+          script {
+              // Clone the GitOps repository into the Jenkins workspace
+              git branch: 'main',
+                  credentialsId: 'github_unamepword',
+                  url: 'https://github.com/tomergabayy/musachit.git'
+
+              // Modify the configuration file(s) to update the image tag
+              new_tag = ${version}-${currentBuild.number}
+              sh 'sed -i "s/tag:.*/tag: \"$new_tag\"/" values.yaml'
+
+              // Add, commit, and push the changes to the GitOps repository
+              sh 'git add .'
+              sh 'git commit -m "Update image tag"'
+              sh 'git push origin main'
+          }
       }
     }
   }
 
   post {
     always {
-      sh "docker image rm -f tomergabayy/whatstheweather:'${version}-${currentBuild.number}'"
-      sh "docker image rm -f tomergabayy/whatstheweather:latest"
+      sh "docker image prune -a -f"
       cleanWs()
     }
 
