@@ -19,8 +19,8 @@ pipeline {
     stage ('STAGE 2 build') {
       steps {
         script{
-          sh "docker build -t tomergabayy/musachit:'${version}-${currentBuild.number}' ." 
-          sh "docker build -t tomergabayy/musachit:latest ."
+          sh "sudo docker build -t tomergabayy/musachit:'${version}-${currentBuild.number}' ." 
+          sh "sudo docker build -t tomergabayy/musachit:latest ."
         }
         
       }
@@ -34,8 +34,8 @@ pipeline {
 
     stage ('STAGE 4 Publish ') {
       steps {
-      sh "docker push tomergabayy/musachit:'${version}-${currentBuild.number}'"
-      sh "docker push tomergabayy/whatstheweather:latest"
+      sh "sudo docker push tomergabayy/musachit:'${version}-${currentBuild.number}'"
+      sh "sudo docker push tomergabayy/whatstheweather:latest"
       }
     }
 
@@ -62,7 +62,7 @@ pipeline {
 
   post {
     always {
-      sh "docker image prune -a -f"
+      sh "sudo docker image prune -a -f"
       cleanWs()
     }
 
