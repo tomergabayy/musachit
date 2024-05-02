@@ -35,7 +35,7 @@ pipeline {
     stage ('STAGE 4 Publish ') {
       steps {
       sh "sudo docker push tomergabayy/musachit:'${version}-${currentBuild.number}'"
-      sh "sudo docker push tomergabayy/whatstheweather:latest"
+      sh "sudo docker push tomergabayy/musachit:latest"
       }
     }
 
