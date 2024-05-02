@@ -19,7 +19,7 @@ pipeline {
     stage ('STAGE 2 build') {
       steps {
         script{
-          sh "docker build -t tomergabayy/musachit:${version}-${currentBuild.number}"
+          sh "docker build -t tomergabayy/musachit:'${version}-${currentBuild.number}'"
           sh "docker build -t tomergabayy/musachit:latest"
         }
         
